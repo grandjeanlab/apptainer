@@ -1,0 +1,32 @@
+BootStrap: docker
+From: python:3.10-alpine
+
+%labels
+        APPLICATION_NAME nvim in Apptainer 
+        AUTHOR_NAME Joanes Grandjean
+        YEAR 2023
+        Version 2023.1.28
+
+%help
+        This container is based on python3.10 in alpine
+        Currently dont working great. 
+
+%environment
+        PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+        LANG=C.UTF-8 LC_ALL=C.UTF-8
+        PYTHONPATH=/usr/lib/python3.10/site-packages
+
+%post
+
+ #Install nvim and hard to get python packages
+        
+        apk --update add --no-cache neovim nodejs py3-pandas py3-numpy py3-matplotlib py3-seaborn py3-pynvim py3-scipy py3-scikit-learn
+
+        ln -sf python3 /usr/bin/python
+        ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
+
+
+# Install Jupyter notebook
+        python3 -m pip --no-cache-dir install  jupyter nilearn --no-deps
+        
+
