@@ -20,11 +20,19 @@ From: python:3.10-alpine
 
  #Install nvim and hard to get python packages
         
-        apk --update add --no-cache neovim nodejs py3-pandas py3-numpy py3-matplotlib py3-seaborn py3-pynvim py3-scipy py3-scikit-learn
+        apk --update add --no-cache sudo neovim nodejs py3-pandas py3-numpy py3-matplotlib py3-seaborn py3-pynvim py3-scipy py3-scikit-learn
 
         ln -sf python3 /usr/bin/python
         ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
 
+        # Create user
+        #useradd -ms /bin/bash alper
+        #echo "alper ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/alper
+        #chmod 0440 /etc/sudoers.d/alper
+
+
+        #su alper
+        #cd /home/alper
 
 # Install Jupyter notebook
         python3 -m pip --no-cache-dir install  jupyter nilearn --no-deps
