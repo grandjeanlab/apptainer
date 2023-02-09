@@ -23,7 +23,7 @@ From: python:3.10-alpine
         apk --update add --no-cache sudo neovim nodejs py3-pandas py3-numpy py3-matplotlib py3-seaborn py3-pynvim py3-scipy py3-scikit-learn
 
         ln -sf python3 /usr/bin/python
-        ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
+        ln -fs /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
 
         # Create user
         #useradd -ms /bin/bash alper
