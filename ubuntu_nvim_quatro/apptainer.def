@@ -5,7 +5,7 @@ From: ubuntu:latest
         APPLICATION_NAME Nvim in Apptainer 
         AUTHOR_NAME Joanes Grandjean
         YEAR 2023
-        Version 20230224
+        Version 20230321
 
 %help
         This container is based on ubuntu latest and contains Python3/R, quarto, nvim, and nodejs to enable github copilot
@@ -62,7 +62,7 @@ From: ubuntu:latest
 
         python3 -m pip --no-cache-dir install pynvim jupyter jupyter-core pyqt5 nilearn pandas numpy matplotlib seaborn pingouin statsmodels scipy spec2nii
  
-        R --quiet --slave -e 'install.packages(c("report","RNifti","ggdist", "spant"), repos="https://cloud.r-project.org/")'
+        R --quiet --slave -e 'install.packages(c("report","RNifti","ggdist", "spant", "factoextra","cluster","wesanderson"), repos="https://cloud.r-project.org/")'
 # Cleanup
         apt-get -qq clean
         rm -rf /var/lib/apt/lists/* 
