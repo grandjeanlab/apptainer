@@ -1,0 +1,52 @@
+BootStrap: docker
+From: ubuntu:latest
+
+%labels
+        APPLICATION_NAME mricro_gl in Apptainer 
+        AUTHOR_NAME Joanes Grandjean
+        YEAR 2023
+        Version 20230321
+
+%help
+        This container is based on ubuntu latest and contains Python3 fsleyes and mricro_gl
+        
+
+%environment
+        PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+        LANG=C.UTF-8 LC_ALL=C.UTF-8
+
+%post
+
+# Install python and base ubuntu 
+        cd /tmp
+        mkdir -p /opt
+        
+        
+        apt-get -qq -y update
+
+        export DEBIAN_FRONTEND=noninteractive
+        ln -fs /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
+        
+        apt-get -y update
+
+        apt-get install -y --no-install-recommends software-properties-common python3 curl zip unzip libqt5pas1 libcairo2 libgtk2.0-0 python3-pip python3-wxgtk4.0
+
+        python3 -m pip --no-cache-dir install fsleyes
+        
+        
+        curl -fLO https://github.com/rordenlab/MRIcroGL/releases/latest/download/MRIcroGL_linux.zip
+        unzip MRIcroGL_linux.zip
+        
+        mv MRIcroGL /opt/
+
+
+
+        export LANG=C.UTF-8 LC_ALL=C.UTF-8
+
+
+# Cleanup
+        apt-get -qq clean
+        rm -rf /var/lib/apt/lists/* 
+        rm -rf /tmp/MRIcroGL*
+
+
