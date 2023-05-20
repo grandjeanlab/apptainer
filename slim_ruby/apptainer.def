@@ -1,5 +1,5 @@
 BootStrap: docker
-From: ruby:slim-bullseye
+From: ruby:2.6.10-slim-bullseye
 
 %labels
         APPLICATION_NAME Ruby and jekyll in Apptainer 
@@ -15,11 +15,15 @@ From: ruby:slim-bullseye
         PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
         LANG=C.UTF-8 LC_ALL=C.UTF-8
 
+%files
+    gem/* gem/
+
 %post
 
 # Install Ruby and base ubuntu 
         cd /tmp        
-        
+        ls ./
+
         export DEBIAN_FRONTEND=noninteractive
         ln -fs /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
 
@@ -27,7 +31,16 @@ From: ruby:slim-bullseye
         apt-get -qq -y update
         apt-get install -y --no-install-recommends build-essential zlib1g-dev
         
-        gem install jekyll bundler
+        gem install jekyll -v 3.8.5 
+        gem install bundler -v 1.17.3
+        #gem install jekyll-paginate -v 1.1.0
+        #gem install jekyll-sitemap -v 1.4.0
+        #gem install webrick -v 1.7.0
+        #gem install public_suffix -v 5.0.0
+
+        cd /gem
+        bundle install
+
 
         export LANG=C.UTF-8 LC_ALL=C.UTF-8
 
