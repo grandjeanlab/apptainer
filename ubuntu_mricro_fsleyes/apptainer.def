@@ -10,6 +10,8 @@ From: ubuntu:latest
 %help
         This container is based on ubuntu latest and contains Python3 fsleyes and mricro_gl
         
+%files
+        cassatt2.clut /opt/cassatt2.clut
 
 %environment
         PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
@@ -39,7 +41,7 @@ From: ubuntu:latest
         
         mv MRIcroGL /opt/
 
-
+        mv /opt/cassatt2.clut /opt/MRIcroGL/Resources/lut/
 
         export LANG=C.UTF-8 LC_ALL=C.UTF-8
 
