@@ -1,0 +1,27 @@
+apptainer run docker://repronim/neurodocker:latest \
+generate singularity --pkg-manager yum \
+    --base-image fedora:38 \
+    --ants version=2.4.3 \
+    --afni method=binaries version=latest \
+    --fsl version=6.0.4 \
+    --miniconda version=latest pip_install="argh joblub matplotlib>=2.0.2 NumPy>=1.13.3 pandas seaborn statsmodels nibabel nipy>=0.4.1 Nipype>=1.0.0 PyBIDS<=0.6.5 scikit-image SciPy nilearn" \
+    --user nonroot \
+    --yes  \
+    --run-bash "git clone https://github.com/IBT-FMI/SAMRI.git; cd SAMRI; pip install --user ." > samri
+
+
+
+apptainer run docker://repronim/neurodocker:latest \
+generate singularity --pkg-manager apt \
+    --base-image neurodebian:bookworm \
+    --ants version=2.4.3 \
+    --afni method=binaries version=latest \
+    --fsl version=6.0.6 \
+    --minc version=1.9.18 \
+    --miniconda version=latest pip_install="rabies" \
+    --user nonroot \
+    --yes > rabies
+
+
+
+/project/m/mchakrav/gjoanes
