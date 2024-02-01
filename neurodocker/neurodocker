@@ -1,3 +1,5 @@
+
+# reciepe to build samri...  not tested
 apptainer run docker://repronim/neurodocker:latest \
 generate singularity --pkg-manager yum \
     --base-image fedora:38 \
@@ -10,7 +12,7 @@ generate singularity --pkg-manager yum \
     --run-bash "git clone https://github.com/IBT-FMI/SAMRI.git; cd SAMRI; pip install --user ." > samri
 
 
-
+# reciepe to build rabies...  not tested
 apptainer run docker://repronim/neurodocker:latest \
 generate singularity --pkg-manager apt \
     --base-image neurodebian:bookworm \
@@ -23,5 +25,8 @@ generate singularity --pkg-manager apt \
     --yes > rabies
 
 
+# reciepe to build dependencies for di pipeline 1
+apptainer run docker://repronim/neurodocker:latest generate singularity --pkg-manager yum --base-image fedora:36 --yes --afni method=binaries version=latest --ants version=2.4.3 --fsl version=6.0.6 --run-bash "yum install -y -q git; mkdir -p /opt/MouseANTs; git clone https://github.com/grandjeanlab/MouseANTs.git /opt/MouseANTs;  cd /opt/MouseANTs; chmod +x *.sh; export PATH=/opt/MouseANTs:$PATH" > di1
 
-/project/m/mchakrav/gjoanes
+# reciepe to build dependencies for di pipeline 2
+apptainer run docker://repronim/neurodocker:latest generate singularity --pkg-manager yum --base-image fedora:36 --yes --afni method=binaries version=latest --ants version=2.4.3 --fsl version=6.0.6 --miniconda version=latest env_name=nipype pip_install="nipype pybids nilearn" > di2
