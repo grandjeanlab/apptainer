@@ -15,7 +15,7 @@ For deeplabcut apptainer
 
 For ruby
 `apptainer shell ruby.sif`
-`cd ~/Document/website/Index`
+`cd ~/Documents/website/Index`
 `bundle exec jekyll serve`
 
 
