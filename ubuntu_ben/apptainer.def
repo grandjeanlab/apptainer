@@ -1,0 +1,54 @@
+BootStrap: docker
+From: tensorflow/tensorflow:1.15.4-gpu-py3
+
+%labels
+        APPLICATION_NAME BEN segmentation in Apptainer 
+        AUTHOR_NAME Joanes Grandjean
+        YEAR 2024
+        Version 20240506
+
+%help
+        This container is based on tensorflow and contains BEN
+
+%environment
+        PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+        LANG=C.UTF-8 LC_ALL=C.UTF-8
+
+%files
+        cuda-ubuntu1804-keyring.gpg /tmp/cuda-ubuntu1804-keyring.gpg
+
+%post
+
+# Install nvim and python 
+
+        #apt-key del 7fa2af80
+        apt-key add /tmp/cuda-ubuntu1804-keyring.gpg
+
+        apt-get update -yy --allow-unauthenticated
+
+        export DEBIAN_FRONTEND=noninteractive
+        ln -fs /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime
+
+        apt-get -yy update --allow-unauthenticated
+        apt-get install -yy --no-install-recommends software-properties-common  git libsm6 libxrender1 libxtst6 libfontconfig1 --allow-unauthenticated
+        
+
+        export LANG=C.UTF-8 LC_ALL=C.UTF-8
+
+
+# Install BEN 
+        mkdir -p /opt/BEN
+        cd /opt/
+        git clone https://github.com/yu02019/BEN.git
+        cd BEN
+        pip install -r requirements.txt
+
+
+        
+# Cleanup
+        apt-get -qq clean
+        rm -rf /var/lib/apt/lists/* 
+
+%runscript
+
+        
