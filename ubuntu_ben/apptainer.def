@@ -15,7 +15,7 @@ From: tensorflow/tensorflow:1.15.4-gpu-py3
         LANG=C.UTF-8 LC_ALL=C.UTF-8
 
 %files
-        cuda-ubuntu1804-keyring.gpg /tmp/cuda-ubuntu1804-keyring.gpg
+        #cuda-ubuntu1804-keyring.gpg /tmp/cuda-ubuntu1804-keyring.gpg
 
 %post
 
@@ -42,6 +42,7 @@ From: tensorflow/tensorflow:1.15.4-gpu-py3
         git clone https://github.com/yu02019/BEN.git
         cd BEN
         pip install -r requirements.txt
+        pip install tqdm
 
 
         

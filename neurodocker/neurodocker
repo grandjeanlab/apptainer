@@ -29,4 +29,7 @@ generate singularity --pkg-manager apt \
 apptainer run docker://repronim/neurodocker:latest generate singularity --pkg-manager yum --base-image fedora:36 --yes --afni method=binaries version=latest --ants version=2.4.3 --fsl version=6.0.6 --run-bash "yum install -y -q git; mkdir -p /opt/MouseANTs; git clone https://github.com/grandjeanlab/MouseANTs.git /opt/MouseANTs;  cd /opt/MouseANTs; chmod +x *.sh; export PATH=/opt/MouseANTs:$PATH" > di1
 
 # reciepe to build dependencies for di pipeline 2
-apptainer run docker://repronim/neurodocker:latest generate singularity --pkg-manager yum --base-image fedora:36 --yes --afni method=binaries version=latest --ants version=2.4.3 --fsl version=6.0.6 --miniconda version=latest env_name=nipype pip_install="nipype pybids nilearn" > di2
+apptainer run docker://repronim/neurodocker:latest generate singularity --pkg-manager yum --base-image fedora:36 --yes --install python2.7 --afni method=binaries version=latest --ants version=2.4.3 --miniconda version=latest env_name=nipype pip_install="nipype pybids nilearn" > di2
+
+# reciepe to build dependencies for samri
+apptainer run docker://repronim/neurodocker:latest generate singularity --pkg-manager yum --base-image fedora:36 --yes  --afni method=binaries version=latest --ants version=2.4.3 --fsl version=6.0.6  --miniconda version=latest env_name=nipype conda_install="argh joblub matplotlib>=2.0.2 NumPy>=1.13.3 pandas seaborn statsmodels nibabel nipy>=0.4.1 Nipype>=1.0.0 PyBIDS<=0.6.5 scikit-image SciPy nilearn" --run-bash "git clone https://github.com/IBT-FMI/SAMRI.git; cd SAMRI; pip install --user ." > samri

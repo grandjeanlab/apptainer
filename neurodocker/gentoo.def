@@ -1,0 +1,51 @@
+BootStrap: docker
+From: gentoo/stage3
+
+%labels
+        APPLICATION_NAME samri in Apptainer 
+        AUTHOR_NAME Joanes Grandjean
+        YEAR 2024
+        Version 2024.8.1
+
+%help
+        This container is based on gentoo
+
+%environment
+        PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+        LANG=C.UTF-8 LC_ALL=C.UTF-8
+
+%post
+        emerge --sync
+        
+        emerge dev-vcs/git
+
+        #rm -rf /etc/portage/package.accept_keywords
+        #rm -rf /etc/portage/package.use
+        
+        #echo "*/* ~amd64" >> /etc/portage/package.accept_keywords
+        #echo "*/* PYTHON_TARGETS: python3_10" >> /etc/portage/package.use
+
+        #mkdir -p /tmp
+        #cd /tmp
+        #rm -rf SAMRI
+        
+        #git clone https://github.com/IBT-FMI/SAMRI.git
+        #cd SAMRI/.gentoo
+        #./install.sh
+        
+        emerge --noreplace --verbose eselect-repository
+        eselect repository enable science
+        emerge --sync
+
+        echo 'ACCEPT_LICENSE="*"' >> /etc/portage/make.conf
+        echo 'ACCEPT_KEYWORDS="~amd64"' >> /etc/portage/make.conf
+        echo "*/* PYTHON_TARGETS: python3_10" >> /etc/portage/package.use/gen
+
+        etc-update
+
+        #emerge --verbose --update --deep --newuse @world
+
+        emerge --autounmask=y --autounmask-write  --autounmask-continue sci-biology/samri
+
+ 
+

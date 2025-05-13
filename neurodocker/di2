@@ -8,20 +8,15 @@ export PATH="/opt/afni-latest:$PATH"
 export AFNI_PLUGINPATH="/opt/afni-latest"
 export ANTSPATH="/opt/ants-2.4.3/"
 export PATH="/opt/ants-2.4.3:$PATH"
-export FSLDIR="/opt/fsl-6.0.6"
-export PATH="/opt/fsl-6.0.6/bin:$PATH"
-export FSLOUTPUTTYPE="NIFTI_GZ"
-export FSLMULTIFILEQUIT="TRUE"
-export FSLTCLSH="/opt/fsl-6.0.6/bin/fsltclsh"
-export FSLWISH="/opt/fsl-6.0.6/bin/fslwish"
-export FSLLOCKDIR=""
-export FSLMACHINELIST=""
-export FSLREMOTECALL=""
-export FSLGECUDAQ="cuda.q"
 export CONDA_DIR="/opt/miniconda-latest"
 export PATH="/opt/miniconda-latest/bin:$PATH"
 
 %post
+yum install -y -q \
+    python2.7
+yum clean all
+rm -rf /var/cache/yum/*
+
 yum install -y -q \
     R \
     cmake \
@@ -77,36 +72,6 @@ mv /opt/ants-2.4.3/bin/* /opt/ants-2.4.3
 rm ants.zip
 
 yum install -y -q \
-    bc \
-    curl \
-    file \
-    libGL \
-    libGLU \
-    libICE \
-    libSM \
-    libX11 \
-    libXcursor \
-    libXext \
-    libXft \
-    libXinerama \
-    libXrandr \
-    libXt \
-    libgomp \
-    libjpeg \
-    libmng \
-    libpng12 \
-    nano \
-    openblas-serial \
-    python3 \
-    sudo \
-    wget
-yum clean all
-rm -rf /var/cache/yum/*
-
-echo "Installing FSL ..."
-curl -fsSL https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/fslinstaller.py | python3 - -d /opt/fsl-6.0.6 -V 6.0.6
-
-yum install -y -q \
     bzip2 \
     curl
 yum clean all
@@ -153,6 +118,21 @@ printf '{ \
       } \
     }, \
     { \
+      "name": "install", \
+      "kwds": { \
+        "pkgs": [ \
+          "python2.7" \
+        ], \
+        "opts": null \
+      } \
+    }, \
+    { \
+      "name": "run", \
+      "kwds": { \
+        "command": "yum install -y -q \\\\\\n    python2.7\\nyum clean all\\nrm -rf /var/cache/yum/*" \
+      } \
+    }, \
+    { \
       "name": "env", \
       "kwds": { \
         "PATH": "/opt/afni-latest:$PATH", \
@@ -176,27 +156,6 @@ printf '{ \
       "name": "run", \
       "kwds": { \
         "command": "yum install -y -q \\\\\\n    curl \\\\\\n    unzip\\nyum clean all\\nrm -rf /var/cache/yum/*\\necho \\"Downloading ANTs ...\\"\\ncurl -fsSL -o ants.zip https://github.com/ANTsX/ANTs/releases/download/v2.4.3/ants-2.4.3-centos7-X64-gcc.zip\\nunzip ants.zip -d /opt\\nmv /opt/ants-2.4.3/bin/* /opt/ants-2.4.3\\nrm ants.zip" \
-      } \
-    }, \
-    { \
-      "name": "env", \
-      "kwds": { \
-        "FSLDIR": "/opt/fsl-6.0.6", \
-        "PATH": "/opt/fsl-6.0.6/bin:$PATH", \
-        "FSLOUTPUTTYPE": "NIFTI_GZ", \
-        "FSLMULTIFILEQUIT": "TRUE", \
-        "FSLTCLSH": "/opt/fsl-6.0.6/bin/fsltclsh", \
-        "FSLWISH": "/opt/fsl-6.0.6/bin/fslwish", \
-        "FSLLOCKDIR": "", \
-        "FSLMACHINELIST": "", \
-        "FSLREMOTECALL": "", \
-        "FSLGECUDAQ": "cuda.q" \
-      } \
-    }, \
-    { \
-      "name": "run", \
-      "kwds": { \
-        "command": "yum install -y -q \\\\\\n    bc \\\\\\n    curl \\\\\\n    file \\\\\\n    libGL \\\\\\n    libGLU \\\\\\n    libICE \\\\\\n    libSM \\\\\\n    libX11 \\\\\\n    libXcursor \\\\\\n    libXext \\\\\\n    libXft \\\\\\n    libXinerama \\\\\\n    libXrandr \\\\\\n    libXt \\\\\\n    libgomp \\\\\\n    libjpeg \\\\\\n    libmng \\\\\\n    libpng12 \\\\\\n    nano \\\\\\n    openblas-serial \\\\\\n    python3 \\\\\\n    sudo \\\\\\n    wget\\nyum clean all\\nrm -rf /var/cache/yum/*\\n\\necho \\"Installing FSL ...\\"\\ncurl -fsSL https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/fslinstaller.py | python3 - -d /opt/fsl-6.0.6 -V 6.0.6" \
       } \
     }, \
     { \
