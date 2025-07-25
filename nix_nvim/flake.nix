@@ -1,36 +1,43 @@
 {
-  description = "Flake to build a neovim image with python and r packages for generic use";
-
+  description = "test";
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
+outputs = { self, nixpkgs, nixvim, ... }:
+  let
+    pkgs = import nixpkgs { system = "x86_64-linux"; config.allowUnfree = true;};
+  in
+  {
+    packages.x86_64-linux.default = pkgs.singularity-tools.buildImage {
 
-  outputs = { self, nixpkgs }:
-    let
-      pkgs = import nixpkgs { system = "x86_64-linux"; allowUnfree = true; };
-    in
-    {
-      packages.x86_64-linux.default = pkgs.singularity-tools.buildImage {
-        name = "nvim";
-        singularity = pkgs.apptainer;
-        runAsRoot = ''
-          #!${pkgs.stdenv.shell}
-          ${pkgs.dockerTools.shadowSetup}
-          mkdir -p /.singularity.d/env/
-          echo $APPTAINER_ENVIRONMENT
-          echo "export XDG_CACHE_HOME=~/.hpc-tools-cache" >> /.singularity.d/env/91-custom-environment.sh
-          echo "export SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt" >> /.singularity.d/env/91-custom-environment.sh
-          chmod +x /.singularity.d/env/91-custom-environment.sh
-          '';
-        diskSize = 1024 * 1024;
 
-        contents = with pkgs; [ 
-
+      name = "hpc-tools";
+      singularity = pkgs.apptainer;
+      runScript = "#!${pkgs.stdenv.shell}\nexec /bin/sh $@";
+      runAsRoot = ''
+        #!${pkgs.stdenv.shell}
+        ${pkgs.dockerTools.shadowSetup}
+        mkdir -p /.singularity.d/env/
+        echo $APPTAINER_ENVIRONMENT
+        echo "export XDG_CACHE_HOME=~/.hpc-tools-cache" >> /.singularity.d/env/91-custom-environment.sh
+        echo "export SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt" >> /.singularity.d/env/91-custom-environment.sh
+        chmod +x /.singularity.d/env/91-custom-environment.sh
+      '';
+      diskSize = 1024 * 20;
+      memSize = 1024 * 8;
+      contents = with pkgs; [
+        (nixvim.legacyPackages."${pkgs.stdenv.hostPlatform.system}".makeNixvimWithModule {
+          inherit pkgs;
+          module = ./nixvim;
+        })
           nushell
           busybox
           cacert
           curl
-          neovim
           fzf
           fd
           lazygit
@@ -71,8 +78,7 @@
           dabestr
           ];})
 
-        ];
-        runScript = "${pkgs.neovim}/bin/nvim";
-      };
+      ];
     };
+  };
 }
