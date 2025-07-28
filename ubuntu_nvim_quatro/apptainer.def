@@ -75,11 +75,13 @@ From: ubuntu:25.04
         mkdir -p /python-dev/
         cd /python-dev/
         uv venv
-        uv pip install matplotlib pynvim jupyter-core nilearn pandas numpy matplotlib seaborn pingouin statsmodels scipy
+        uv pip install matplotlib pynvim PyYAML ipython jupyter nilearn pandas numpy matplotlib seaborn pingouin statsmodels scipy
 
         # add the virtual environment to the PATH
         echo "source /python-dev/.venv/bin/activate" >> /etc/bash.bashrc
         echo 'export SHELL="/bin/bash"' >> $SINGULARITY_ENVIRONMENT
+        echo 'export XDG_RUNTIME_DIR="."' >> $SINGULARITY_ENVIRONMENT
+        echo ". /python-dev/.venv/bin/activate" >> $SINGULARITY_ENVIRONMENT
 
         # Cleanup
         apt-get -qq clean
@@ -87,4 +89,4 @@ From: ubuntu:25.04
         rm -f /tmp/*.deb
  
 %runscript
-        /bin/bash
+        exec /bin/bash
